@@ -5,10 +5,20 @@ image:
   pullPolicy: IfNotPresent
   tag: "v1.0"
 
+imagePullSecrets: []
+
 service:
+  enabled: true
   type: NodePort
   port: 3000
   nodePort: 30007
+
+serviceAccount:
+  create: true
+  name: ""
+
+autoscaling:
+  enabled: false
 
 ingress:
   enabled: false
@@ -29,3 +39,11 @@ readinessProbe:
   httpGet:
     path: /contact
     port: 3000
+
+resources: {}
+
+securityContext: {}
+podSecurityContext: {}
+
+podAnnotations: {}
+podLabels: {}
