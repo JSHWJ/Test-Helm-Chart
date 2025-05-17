@@ -1,0 +1,31 @@
+replicaCount: 2
+
+image:
+  repository: jshwj/nextjs-test
+  pullPolicy: IfNotPresent
+  tag: "v1.0"
+
+service:
+  type: NodePort
+  port: 3000
+  nodePort: 30007
+
+ingress:
+  enabled: false
+  className: "nginx"
+  hosts:
+    - host: test.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+livenessProbe:
+  httpGet:
+    path: /about
+    port: 3000
+
+readinessProbe:
+  httpGet:
+    path: /contact
+    port: 3000

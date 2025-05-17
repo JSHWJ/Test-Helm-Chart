@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: applicationset-helm-projects
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: "https://github.com/JSHWJ/Test-Helm-Chart.git"
+        revision: main
+        directories:
+          - path: "helm-projects/*"
+  template:
+    metadata:
+      name: "{{path.basename}}-helm" # 자동 생성될 Application의 이름.
+    spec:
+      project: default
+      source:
+        repoURL: "https://github.com/JSHWJ/Test-Helm-Chart.git"
+        targetRevision: main
+        path: helm-base
+        helm:
+          valueFiles:
+            - $refs/{{path}}/values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{path.basename}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+      sources:
+        - repoURL: "https://github.com/JSHWJ/Test-Helm-Chart.git"
+          targetRevision: main
+          ref: refs
