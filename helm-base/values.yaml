@@ -14,7 +14,7 @@ service:
   nodePort: 30007
 
 serviceAccount:
-  create: true
+  create: false
   name: ""
 
 autoscaling:
